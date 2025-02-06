@@ -1,0 +1,4 @@
+DEFAULT 0
+synonymous_variant 1
+stop_retained_variant 1
+

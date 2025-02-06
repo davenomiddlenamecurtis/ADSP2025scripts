@@ -1,0 +1,20 @@
+--weight-expression '( ( GETVEP ("CSQ" VCF23TOXADDLOWERCHRLOOKUP "/cluster/project9/bipolargenomes/ADSP/ADSP2024/vcf/ADSP.AM.annot.vcf.gz")) GETWEIGHT "/home/rejudcu/ADSP2024/ADSPscripts.2024/pars/catWeight.FivePrime.txt" )'
+--weight-name FivePrime
+--weight-expression '( ( GETVEP ("CSQ" VCF23TOXADDLOWERCHRLOOKUP "/cluster/project9/bipolargenomes/ADSP/ADSP2024/vcf/ADSP.AM.annot.vcf.gz")) GETWEIGHT "/home/rejudcu/ADSP2024/ADSPscripts.2024/pars/catWeight.InDelEtc.txt" )'
+--weight-name InDelEtc
+--weight-expression '( ( GETVEP ("CSQ" VCF23TOXADDLOWERCHRLOOKUP "/cluster/project9/bipolargenomes/ADSP/ADSP2024/vcf/ADSP.AM.annot.vcf.gz")) GETWEIGHT "/home/rejudcu/ADSP2024/ADSPscripts.2024/pars/catWeight.IntronicEtc.txt" )'
+--weight-name IntronicEtc
+--weight-expression '( ( GETVEP ("CSQ" VCF23TOXADDLOWERCHRLOOKUP "/cluster/project9/bipolargenomes/ADSP/ADSP2024/vcf/ADSP.AM.annot.vcf.gz")) GETWEIGHT "/home/rejudcu/ADSP2024/ADSPscripts.2024/pars/catWeight.LOF.txt" )'
+--weight-name LOF
+--weight-expression '( ( GETVEP ("CSQ" VCF23TOXADDLOWERCHRLOOKUP "/cluster/project9/bipolargenomes/ADSP/ADSP2024/vcf/ADSP.AM.annot.vcf.gz")) GETWEIGHT "/home/rejudcu/ADSP2024/ADSPscripts.2024/pars/catWeight.ProteinAltering.txt" )'
+--weight-name ProteinAltering
+--weight-expression '( ( GETVEP ("CSQ" VCF23TOXADDLOWERCHRLOOKUP "/cluster/project9/bipolargenomes/ADSP/ADSP2024/vcf/ADSP.AM.annot.vcf.gz")) GETWEIGHT "/home/rejudcu/ADSP2024/ADSPscripts.2024/pars/catWeight.SpliceRegion.txt" )'
+--weight-name SpliceRegion
+--weight-expression '( ( GETVEP ("CSQ" VCF23TOXADDLOWERCHRLOOKUP "/cluster/project9/bipolargenomes/ADSP/ADSP2024/vcf/ADSP.AM.annot.vcf.gz")) GETWEIGHT "/home/rejudcu/ADSP2024/ADSPscripts.2024/pars/catWeight.Synonymous.txt" )'
+--weight-name Synonymous
+--weight-expression '( ( GETVEP ("CSQ" VCF23TOXADDLOWERCHRLOOKUP "/cluster/project9/bipolargenomes/ADSP/ADSP2024/vcf/ADSP.AM.annot.vcf.gz")) GETWEIGHT "/home/rejudcu/ADSP2024/ADSPscripts.2024/pars/catWeight.ThreePrime.txt" )'
+--weight-name ThreePrime
+--weight-expression '( ( "CSQ" VCF23TOXADDLOWERCHRLOOKUP "/cluster/project9/bipolargenomes/ADSP/ADSP2024/vcf/ADSP.AM.annot.vcf.gz") GETVEPFIELD 35 ) GETWEIGHT "/home/rejudcu/ADSP2024/ADSPscripts.2024/pars/weights.AM.20231026.txt" '
+--weight-name AM_prediction
+--weight-expression '( ( "CSQ" VCF23TOXADDLOWERCHRLOOKUP "/cluster/project9/bipolargenomes/ADSP/ADSP2024/vcf/ADSP.AM.annot.vcf.gz") GETVEPFIELD 37 ) * 10 '
+--weight-name AM_score

@@ -1,0 +1,5 @@
+DEFAULT 0
+inframe_deletion 1
+inframe_insertion 1
+transcript_amplification 1
+

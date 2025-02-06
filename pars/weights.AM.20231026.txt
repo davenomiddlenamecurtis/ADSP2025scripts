@@ -1,0 +1,4 @@
+DEFAULT 0
+likely_benign 0
+ambiguous 5
+likely_pathogenic 10

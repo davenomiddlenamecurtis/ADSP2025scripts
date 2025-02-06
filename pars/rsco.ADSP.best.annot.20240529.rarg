@@ -1,0 +1,10 @@
+--IDphenotypefile  /home/rejudcu/ADSP2024/PhenoFiles/PrevAD.txt
+--inputscorefilespec /cluster/project9/bipolargenomes/ADSP/ADSP.forAnnot.20240502/results/ADSP.forAnnot.20240502.GENE.sco
+--outputfilespec /home/rejudcu/ADSP2024/genes/ADSP.best.annot.20240529.GENE.rsao
+--varfile /cluster/project9/bipolargenomes/ADSP/ADSP2024/vcf/ADSP.threaded.eigenvec.txt
+--varfile /home/rejudcu/ADSP2024/PhenoFiles/Sex.txt
+--varfile /home/rejudcu/ADSP2024/PhenoFiles/DoseAPOE3.txt
+--varfile /home/rejudcu/ADSP2024/PhenoFiles/DoseAPOE4.txt
+--dottest 0
+--dolrtest 0
+--locusweightnamefile /home/rejudcu/ADSP2024/ADSPscripts.2024/pars/ADSP.annot.20240508.wn.par  

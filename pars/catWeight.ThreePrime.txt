@@ -1,0 +1,3 @@
+DEFAULT 0
+3_prime_UTR_variant 1
+

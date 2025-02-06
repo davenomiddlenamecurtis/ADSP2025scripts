@@ -1,0 +1,3 @@
+DEFAULT 0
+splice_region_variant 1
+

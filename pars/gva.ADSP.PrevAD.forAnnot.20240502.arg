@@ -1,0 +1,10 @@
+--arg-file /home/rejudcu/ADSP2024/ADSPscripts.2024/pars/gva.ADSP.forAnnot.20240502.arg
+--ID-and-phenotype-file /home/rejudcu/ADSP2024/PhenoFiles/AllPrevAD.txt
+--test-name ADSP.PrevAD.forAnnot.20240502
+--lamda 0
+--isquantitative 0 
+--dottest 0 
+--dolrtest 0  
+--maxmaf 0.01
+
+

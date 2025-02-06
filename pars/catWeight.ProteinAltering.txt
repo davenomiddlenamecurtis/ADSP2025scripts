@@ -1,0 +1,6 @@
+DEFAULT 0
+protein_altering_variant 1
+missense_variant 1
+start_lost 1
+stop_lost 1
+

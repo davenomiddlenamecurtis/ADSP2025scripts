@@ -1,0 +1,27 @@
+--case-file /cluster/project9/bipolargenomes/ADSP/ADSP2024/vcf/gcad.qc.r2.wes.chr*.20504.GATK.2020.06.26.v2.biallelic.genotypes.ALL.vcf.gz
+--ID-and-phenotype-file /home/rejudcu/ADSP2024/PhenoFiles/AllPrevAD.txt
+--maxmaf 0.01
+--add-chr 1
+--ref-gene-file /home/rejudcu/reference38/refseqgenes.hg38.20191018.sorted.onePCDHG.txt
+--reference-path /home/rejudcu/reference38
+--margin 0
+--upstream 0 
+--downstream 0
+--weight-expression '( ( GETVEP ("CSQ" VCF23TOXLOOKUP "/cluster/project9/bipolargenomes/ADSP/ADSP2024/vcf/ADSP.AM.annot.vcf.gz")) GETWEIGHT "/home/rejudcu/ADSP2024/ADSPscripts.2024/pars/newWeights.20201231.txt" )'
+--weight-name VEPWeight 
+--arg-file /home/rejudcu/ADSP2024/ADSPscripts.2024/pars/gva.23TOX.vepWeights.arg
+--multi-weight-file /home/rejudcu/ADSP2024/ADSPscripts.2024/pars/extraWeights.20240502.txt
+--comment-expression  ' "CSQ" VCF23TOXLOOKUP "/cluster/project9/bipolargenomes/ADSP/ADSP2024/vcf/ADSP.AM.annot.vcf.gz" '
+--merge-alt-alleles 0
+--dont-merge-alleles 1
+--consequence-threshold 0
+--use-consequence-weights 1 
+--only-use-SNPs 0
+--write-comments 1 
+--write-score-file 1
+--skip-if-no-pass 1
+--wild-if-unknown 1
+--ignore-alleles 0
+--GQ-threshold 20
+--use-transposed-file 1
+--arg-file /home/rejudcu/ADSP2024/ADSPscripts.2024/pars/gva.exclusionList.annot.20240502.arg
