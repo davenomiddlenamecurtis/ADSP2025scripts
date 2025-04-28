@@ -2,6 +2,8 @@
 
 # run one GVA analysis on one gene for ADSP 2025
 
+set +e
+
 model=$1
 gene=$2
 test=$3
@@ -31,7 +33,8 @@ cd $tmpdir
 ln -s /cluster/project9/bipolargenomes/ADSP2025/genes/ADSP2025.exons.$gene.annot.vcf.gz myAnnots.gz
 ln -s /cluster/project9/bipolargenomes/ADSP2025/genes/ADSP2025.exons.$gene.annot.vcf.gz.tbi myAnnots.gz.tbi
 
-if [ .$3 -eq . ]
+if [ .$3 == . ]
+then
   geneVarAssoc --arg-file /home/rejudcu/ADSP2025/ADSP2025scripts/pars/gva.$model.arg --gene $gene --case-file /cluster/project9/bipolargenomes/ADSP2025/genes/ADSP2025.exons.$gene.vcf.gz
 else
   geneVarAssoc --arg-file /home/rejudcu/ADSP2025/ADSP2025scripts/pars/gva.$model.arg --gene $gene --case-file /cluster/project9/bipolargenomes/ADSP2025/genes/ADSP2025.exons.$gene.vcf.gz --testfile $test 

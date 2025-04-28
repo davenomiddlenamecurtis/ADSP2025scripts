@@ -1,21 +1,19 @@
 #!/share/apps/R-3.6.1/bin/Rscript
 
-# script to take summary file, select most significant gene/annotation results
+# script to take summary file, use provided list of genes and select most significant annotation results
 # then run scoreassoc on second dataset with those pairs
 
 # submit this script to run all analyses
 
-TopTestsFile="/home/rejudcu/ADSP2024/genes/ADSP.topTests.20250120.txt"
+SummaryFile="/home/rejudcu/ADSP2024/genes/ADSP20240526.coding.summ.txt"
+# ExWASGenesFile="/home/rejudcu/ADSP2025/ExWASGenes.txt"
+ExWASTestsFile="/home/rejudcu/ADSP2025/ADSP.ExWASTests.20250216.txt"
+
 NewModel="ADSP.best.annot.20250120"
 CountsModel="ADSP.raw.counts.20250131"
 NewArgFile=sprintf("/home/rejudcu/ADSP2024/ADSPscripts.2024/pars/gva.%s.arg",NewModel)
-AllResultsFile="ADSP2025.AllResults.txt"
-BestResultsFile="ADSP2025.BestResults.txt"
-
-TREM2NoSNPsModel="ADSP.TREM2NoSNPs.20250416"
-TREM2JustSNPsModel="ADSP.TREM2JustSNPs.20250416"
-NoSNPsArgFile=sprintf("/home/rejudcu/ADSP2024/ADSPscripts.2024/pars/gva.%s.arg",TREM2NoSNPsModel)
-JustSNPsArgFile=sprintf("/home/rejudcu/ADSP2024/ADSPscripts.2024/pars/gva.%s.arg",TREM2JustSNPsModel)
+AllResultsFile="ADSP2025.AllExWASResults.txt"
+BestResultsFile="ADSP2025.BestExWASResults.txt"
 
 CategoryNames=c("Five prime UTR","InDel etc","Intronic etc","LOF","Protein altering","Splice region","Synonymous","Three prime UTR")
 MainWeights=c("VEPWeight","FivePrime","InDelEtc","IntronicEtc","LOF","ProteinAltering","SpliceRegion","Synonymous","ThreePrime")
@@ -23,21 +21,51 @@ ExtraWeightsFile="/home/rejudcu/ADSP2025/ADSP2025scripts/pars/extraWeights.20250
 ExtraWeights=data.frame(read.table(ExtraWeightsFile,header=TRUE,stringsAsFactors=FALSE,fill=TRUE))[,1]
 DefaultTestFile="/home/rejudcu/ADSP2025/ADSP2025scripts/pars/test.counts.20250110.tst"
 
+ExWASGenes=c("GRN", "GBA", "ADAM10", "FRMD8", "DDX1", "DNMT3L", "MORC1", "TGM2")
+TestsFile="/home/rejudcu/ADSP2024/ADSPscripts.2024/pars/ADSP.annot.allTests.20240529.txt"
+
 ScoreThreshold=0.35
 
 wd="/home/rejudcu/ADSP2025"
 setwd(wd)
 
-TopTests=data.frame(read.table(TopTestsFile,header=TRUE,sep="\t",stringsAsFactors=FALSE))
+Summary=data.frame(read.table(SummaryFile,header=TRUE,stringsAsFactors=FALSE))
+Summary=Summary[Summary[,1] %in% ExWASGenes,]
+# I need to add code to find best annotation
+
+Summary$MaxMLP=apply(Summary[,11:ncol(Summary)], 1, max)
+
+Tests=data.frame(read.table(TestsFile,header=FALSE,stringsAsFactors=FALSE))
+
+ExWASTests=data.frame(matrix("",nrow=nrow(Summary),ncol=3),stringsAsFactors=FALSE)
+colnames(ExWASTests)=c("Gene","TestFile","MaxMLP")
+ExWASTests[,1]=Summary[,1]
+for (r in 1:nrow(Summary)) {
+	for (t in 1:nrow(Tests)) {
+		if (Summary[r,t+10]==Summary$MaxMLP[r]) {
+			if (abs(Summary[r,6])>1.3) { # LOF
+				ExWASTests$TestFile[r]=Tests[t,1]
+			} else {
+# 				ExWASTests$TestFile[r]=gsub(".tst",".NoLOF.tst",Tests[t,1])
+				ExWASTests$TestFile[r]=Tests[t,1] # for ExWAS genes, always include LOF
+			}
+			ExWASTests$MaxMLP[r]=Summary$MaxMLP[r]
+			break
+		}
+	}
+}
+
+write.table(ExWASTests,ExWASTestsFile,col.names=TRUE,row.names=FALSE,quote=FALSE,sep="\t")
+
 AllDone=TRUE
-for (r in 1:nrow(TopTests)) {
-	gene=TopTests[r,1]
+for (r in 1:nrow(ExWASTests)) {
+	gene=ExWASTests[r,1]
 	if (!file.exists(sprintf("/cluster/project9/bipolargenomes/ADSP2025/%s/results/%s.%s.sco",NewModel,NewModel,gene))) {
 		if (!file.exists(sprintf("/cluster/project9/bipolargenomes/ADSP2025/genes/ADSP2025.exons.%s.vcf.gz.tbi",gene))) {
 			print(sprintf("No exon vcf for %s",gene))
 			next
 		}
-		commStr=sprintf("subComm.sh bash /home/rejudcu/ADSP2025/ADSP2025scripts/runOneGene.sh %s %s %s",NewModel,gene,TopTests[r,2])
+		commStr=sprintf("subComm.sh bash /home/rejudcu/ADSP2025/ADSP2025scripts/runOneGene.sh %s %s %s",NewModel,gene,ExWASTests[r,2])
 		print(commStr)
 		system(commStr)
 		AllDone=FALSE
@@ -48,55 +76,30 @@ if (!AllDone) {
 	quit()
 }
 
-# Now run TREM2 without associated SNPs
-AllDone=TRUE
-for (r in 1:nrow(TopTests)) {
-	gene=TopTests[r,1]
-	if (gene!="TREM2") {
-		next
-	}
-	if (!file.exists(sprintf("/cluster/project9/bipolargenomes/ADSP2025/%s/results/%s.%s.sco",TREM2NoSNPsModel,TREM2NoSNPsModel,gene))) {
-		commStr=sprintf("subComm.sh bash /home/rejudcu/ADSP2025/ADSP2025scripts/runOneGene.sh %s %s %s",TREM2NoSNPsModel,gene,TopTests[r,2])
-		print(commStr)
-		system(commStr)
-		AllDone=FALSE
-	}
-	if (!file.exists(sprintf("/cluster/project9/bipolargenomes/ADSP2025/%s/results/%s.%s.sco",TREM2JustSNPsModel,TREM2JustSNPsModel,gene))) {
-		commStr=sprintf("subComm.sh bash /home/rejudcu/ADSP2025/ADSP2025scripts/runOneGene.sh %s %s /home/rejudcu/ADSP2025/ADSP2025scripts/pars/test.counts.for.TREM2.JustSNPs.tst",TREM2JustSNPsModel,gene)
-		print(commStr)
-		system(commStr)
-		AllDone=FALSE
-	}
-}
-
-if (!AllDone) {
-	quit()
-}
-
-for (r in 1:nrow(TopTests)) {
-	gene=TopTests[r,1]
+for (r in 1:nrow(ExWASTests)) {
+	gene=ExWASTests[r,1]
 	lines=readLines(sprintf("/cluster/project9/bipolargenomes/ADSP2025/%s/results/%s.%s.sao",NewModel,NewModel,gene))
 	for (ll in 1:length(lines)) {
 		words=strsplit(lines[ll],"\\s+")[[1]]
 		if (length(words>0)) {
 			if (words[1]=="tMLP") {
-				TopTests$WGSMLP[r]=words[3]
+				ExWASTests$WGSMLP[r]=words[3]
 				break
 			}
 		}
 	}
 }
-write.table(TopTests, AllResultsFile, row.names=FALSE, quote=FALSE, col.names = TRUE,sep="\t")
+write.table(ExWASTests, AllResultsFile, row.names=FALSE, quote=FALSE, col.names = TRUE,sep="\t")
 
 first=TRUE
-TopTests=data.frame(read.table(AllResultsFile,header=TRUE,sep="\t",stringsAsFactors=FALSE))
-for (r in 1:nrow(TopTests)) {
-	if (TopTests$WGSMLP[r]>-log10(0.05/nrow(TopTests))) {
+ExWASTests=data.frame(read.table(AllResultsFile,header=TRUE,sep="\t",stringsAsFactors=FALSE))
+for (r in 1:nrow(ExWASTests)) {
+	if (ExWASTests$WGSMLP[r]>-log10(0.05/nrow(ExWASTests))) {
 		if (first) {
-			Best=TopTests[r,]
+			Best=ExWASTests[r,]
 			first=FALSE
 		} else {
-			Best=rbind(Best,TopTests[r,])
+			Best=rbind(Best,ExWASTests[r,])
 		}
 	}
 }
@@ -104,7 +107,8 @@ for (r in 1:nrow(TopTests)) {
 write.table(Best, BestResultsFile, row.names=FALSE, quote=FALSE, col.names = TRUE,sep="\t")
 
 AllDone=TRUE
-Best=data.frame(read.table(BestResultsFile,header=TRUE,sep="\t",stringsAsFactors=FALSE))
+Best=data.frame(read.table(AllResultsFile,header=TRUE,sep="\t",stringsAsFactors=FALSE))
+# For ExWAS genes, I am going to get counts for all genes, not just best ones
 for (r in 1:nrow(Best)) {
 	gene=Best[r,1]
 	Best[r,2]=gsub("/home/rejudcu/ADSP2024/ADSPscripts.2024/pars/test.annot.","",Best[r,2])

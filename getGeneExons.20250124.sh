@@ -19,7 +19,7 @@ refGeneFile=~/reference38/refseqgenes.hg38.20191018.sortedAndCleaned.onePCDHG.tx
 index=~/ADSP2025/vcfs.index.r5.txt
 bucketPrefix=s3://wanglab-dss-tier0/distribution/adsp/genotype/ALL/fsa000116/preview
 bcftools=/share/apps/genomics/bcftools-1.9/bin/bcftools
-argFile=/home/rejudcu/pars/gva.ADSP2025.extractExons.arg
+argFile=/home/rejudcu/ADSP2025/ADSP2025scripts/pars/gva.ADSP2025.extractExons.arg
 
 extractGeneCoords=' BEGIN { start=300000000; end=0 } { chr= $3; if ($5<start) start=$5; if ($6>end) end=$6 } END { print chr, start, end }'
 getFiles='{ if ($1==chr) { if ($2>start) { print last } ; last=$4; if ($2 > end) { exit } }  } END { print last }'

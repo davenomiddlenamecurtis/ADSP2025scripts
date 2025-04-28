@@ -2,7 +2,7 @@
 --varfile /home/rejudcu/ADSP2025/ADSP.APOE.txt
 --varfile /home/rejudcu/ADSP2025/ADSP.Sex.txt
 --varfile /cluster/project9/bipolargenomes/ADSP2025/PCs/WGS.ADSP2025.common.05.all.eigenvec
---test-name ADSP.raw.counts.20250131
+--test-name ADSP.TREM2JustSNPs.20250416
 --dottest 0
 --maxmaf 0.01
 --add-chr 1
@@ -11,15 +11,14 @@
 --margin 0
 --upstream 0 
 --downstream 0
---weight-expression '( ( GETVEP ("CSQ" VCF23TOXADDLOWERCHRLOOKUP "myAnnots.gz")) GETWEIGHT "/home/rejudcu/ADSP2024/ADSPscripts.2024/pars/newWeights.20201231.txt" )'
---weight-name VEPWeight
---arg-file /home/rejudcu/ADSP2025/ADSP2025scripts/pars/gva.23TOX.vepWeights.arg
---multi-weight-file /home/rejudcu/ADSP2025/ADSP2025scripts/pars/extraWeights.20250122.txt
+--weight-expression '(ATTRIB ("POS") = 41161514 & ATTRIB("ALLS")="C,T")*1'
+--weight-name rs75932628
+--weight-expression '(ATTRIB ("POS") = 41161469)*1'
+--weight-name rs143332484
+--weight-factor 1
 --comment-expression  ' "CSQ" VCF23TOXADDLOWERCHRLOOKUP "myAnnots.gz" '
 --merge-alt-alleles 0
 --dont-merge-alleles 1
---consequence-threshold 0
---use-consequence-weights 1 
 --only-use-SNPs 0
 --write-comments 1 
 --write-score-file 1
@@ -28,9 +27,9 @@
 --ignore-alleles 0
 --GQ-threshold 20
 --use-transposed-file 1
---arg-file /home/rejudcu/ADSP2024/ADSPscripts.2024/pars/gva.exclusionList.annot.20240502.arg
---exclude-expression 'ATTRIB ("POS") = 73192712'
---weight-factor 1.0
---exclude-expression 'ATTRIB ("POS") = 41161514 & ATTRIB("CHR")="6"'
---exclude-expression 'ATTRIB ("POS") = 41161469 & ATTRIB("CHR")="6"'
+--exclude-expression '(ATTRIB ("POS") != 41161514) & (ATTRIB ("POS") != 41161469)'
+--testfile /home/rejudcu/ADSP2025/ADSP2025scripts/pars/test.counts.for.TREM2.rs75932628.tst
+--testfile /home/rejudcu/ADSP2025/ADSP2025scripts/pars/test.counts.for.TREM2.rs143332484.tst
+--testfile /home/rejudcu/ADSP2025/ADSP2025scripts/pars/test.counts.for.TREM2.rs75932628onrs143332484.tst
+--testfile /home/rejudcu/ADSP2025/ADSP2025scripts/pars/test.counts.for.TREM2.rs143332484onrs75932628.tst
 

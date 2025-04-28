@@ -1,0 +1,11 @@
+--ref-gene-file /home/rejudcu/reference38/refseqgenes.hg38.20191018.sortedAndCleaned.onePCDHG.txt
+--reference-path ./
+--upstream 100 
+--downstream 100
+--ID-and-phenotype-file /home/rejudcu/ADSP2025/ADSP.PrevAD.txt
+--only-extract-variants 1
+--omit-introns 1
+--add-chr 1
+--splice-region-size 10
+
+

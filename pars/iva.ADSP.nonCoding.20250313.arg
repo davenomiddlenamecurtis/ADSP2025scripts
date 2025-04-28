@@ -1,0 +1,30 @@
+--ID-and-phenotype-file /home/rejudcu/ADSP2025/ADSP.PrevAD.notWES.txt
+--varfile /home/rejudcu/ADSP2025/ADSP.APOE.txt
+--varfile /home/rejudcu/ADSP2025/ADSP.Sex.txt
+--varfile /cluster/project9/bipolargenomes/ADSP2025/PCs/WGS.ADSP2025.common.05.all.eigenvec
+--test-name ADSP.nonCoding.20250313
+--dottest 0
+--maxmaf 0.01
+--add-chr 1
+--reference-path /home/rejudcu/reference38
+--margin 0
+--upstream 0 
+--downstream 0
+--weight-expression ' ( GETGPN "/cluster/ref1/UGISharedData/GPN-MSA/scores.tsv.bgz" ) * -1 '
+--weight-name GPN_MSA
+--weight-expression ' 1 - ( ATTRIB "ISSNP") '
+--weight-name INDEL
+--weight-expression '( ATTRIB "CPG")'
+--weight-name CPG
+--merge-alt-alleles 0
+--dont-merge-alleles 1
+--consequence-threshold 0
+--use-consequence-weights 1 
+--only-use-SNPs 0
+--write-score-file 1
+--skip-if-no-pass 0
+--wild-if-unknown 1
+--ignore-alleles 0
+--GQ-threshold 20
+--use-transposed-file 1
+--arg-file /home/rejudcu/ADSP2024/ADSPscripts.2024/pars/gva.exclusionList.annot.20240502.arg

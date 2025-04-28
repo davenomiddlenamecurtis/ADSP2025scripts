@@ -17,7 +17,7 @@ fi
 
 if [ -z "$root" ]
 then
-  echo Usage: $0 vcfRoot [ target is vcfRootchr.vcf.gz, can also first export mult=no for only one transcript and X=no if no X chromosome data ]
+  echo Usage: $0 vcfRoot [ target is vcfRoot.vars.vcf.gz, can also first export mult=no for only one transcript and X=no if no X chromosome data ]
   exit
 fi
 
